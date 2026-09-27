@@ -46,20 +46,21 @@
         <button class="tab" onclick="filterCategory('abstract')">Abstract</button>
     </nav>
 
-    <main class="wallpaper-grid">
-        <div class="card" data-category="minimalist" onclick="openPreview('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600')">
-            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400" alt="Minimal Shapes">
-            <div class="card-info"><span class="card-title">Minimal Shapes</span><button class="preview-btn">Preview</button></div>
+        <main class="wallpaper-grid">
+        
+        <!-- Wallpaper Item 1 -->
+        <div class="card" data-category="minimalist" onclick="openPreview('PASTE_YOUR_HIGH_RES_LINK_HERE')">
+            <img src="PASTE_YOUR_THUMBNAIL_LINK_HERE" alt="Your Wallpaper Title">
+            <div class="card-info">
+                <span class="card-title">Your Wallpaper Title</span>
+                <button class="preview-btn">Preview</button>
+            </div>
         </div>
-        <div class="card" data-category="nature" onclick="openPreview('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600')">
-            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400" alt="Ocean Coast">
-            <div class="card-info"><span class="card-title">Ocean Coast</span><button class="preview-btn">Preview</button></div>
-        </div>
-        <div class="card" data-category="abstract" onclick="openPreview('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=600')">
-            <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=400" alt="Neon Blend">
-            <div class="card-info"><span class="card-title">Neon Blend</span><button class="preview-btn">Preview</button></div>
-        </div>
+
+        <!-- Repeat the block above for every new wallpaper you want to add! -->
+
     </main>
+
 
     <div id="previewModal" class="modal" onclick="closePreview()">
         <button class="close-btn" onclick="closePreview()">&times;</button>
