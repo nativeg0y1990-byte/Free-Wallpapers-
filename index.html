@@ -100,3 +100,79 @@
     </script>// https://github.com/nativeg0y1990-byte/Free-Wallpapers-/blob/main/index.html
 </body>
 </html>
+import requests
+from bs4 import BeautifulSoup
+import os
+import time
+
+def download_wallpaper(url, folder="wallpapers"):
+    """
+    A simple script to extract and download free wallpapers from an image site.
+    Always ensure you check the target website's Terms of Service and robots.txt.
+    """
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+    
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+        
+    try:
+        print(f"Connecting to: {url}")
+        response = requests.get(url, headers=headers)
+        if response.status_code != 200:
+            print(f"Failed to load page. Status: {response.status_code}")
+            return
+            
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Look for standard image tags (adjust attributes depending on target site, e.g., Unsplash, Pexels, Pixabay API)
+        images = soup.find_all('img')
+        print(f"Found {len(images)} potential image tags.")
+        
+        count = 0
+        for img in images:
+            # Look for high-res sources in src, data-src, or srcset
+            img_url = img.get('data-src') or img.get('src')
+            
+            if not img_url:
+                continue
+                
+            # Filter for wallpaper-sized images or specific keywords if necessary
+            if "http" not in img_url:
+                # Handle relative URLs
+                if img_url.startswith("//"):
+                    img_url = "https:" + img_url
+                else:
+                    continue
+            
+            # Simple filter to skip small icons or avatars
+            if any(x in img_url.lower() for x in ['avatar', 'icon', 'logo', 'profile']):
+                continue
+                
+            try:
+                print(f"Downloading: {img_url}")
+                img_data = requests.get(img_url, headers=headers).content
+                
+                filename = f"wallpaper_{int(time.time())}_{count}.jpg"
+                filepath = os.path.join(folder, filename)
+                
+                with open(filepath, 'wb') as handler:
+                    handler.write(img_data)
+                    
+                count += 1
+                if count >= 5: # Limit to 5 images for demonstration safety
+                    print("Reached download limit for this run.")
+                    break
+                    
+                time.sleep(1) # Polite delay
+            except Exception as e:
+                print(f"Could not download image {img_url}: {e}")
+                
+        print(f"Successfully downloaded {count} wallpapers to the '{folder}' folder!")
+        
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Example usage:
+# download_wallpaper("https://unsplash.com/t/wallpapers")
